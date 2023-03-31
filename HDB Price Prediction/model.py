@@ -35,26 +35,7 @@ regressor = RandomForestRegressor(n_estimators = 8,  #no. of trees to be used in
                         max_depth = 15,  # maximum number of splits each tree can take. Too low the model will be trained less and have high bias
                         min_samples_split = 2, #every node have 2 subnodes
                         max_features = 6)#maximum features in each tree
-                       
-# define the model with default hyperparameters
-model = AdaBoostRegressor(base_estimator = regressor)
 
-# define the grid of values to search
-grid = dict()
-grid['n_estimators'] = [50, 100, 150, 200, 250, 300]
-grid['learning_rate'] = [0.1, 0.5, 1.0, 1.5, 2.0]
+model = regressor.fit(X_train,y_train)                   
 
-# define the grid search procedure
-grid_search = GridSearchCV(estimator=model, param_grid=grid, n_jobs=-1, cv=2)
-
-# execute the grid search
-grid_result = grid_search.fit(X_train, y_train)
-
-# summarize the best score and configuration
-# print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
-
-#Use the trained model to predict the test data
-y_pred = grid_result.predict(X_test)
-
-
-pickle.dump(grid_result, open('best_model.pkl', 'wb'))
+pickle.dump(model, open('randomForest.pkl', 'wb'))
